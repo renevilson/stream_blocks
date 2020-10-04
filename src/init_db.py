@@ -14,7 +14,7 @@ def create_tables(engine):
     Создаем таблицы для сохранения отслеживаемых ресурсов
     """
 
-    if engine.dialect.has_table(engine, "user") or engine.dialect.has_table(engine, "user"):
+    if engine.dialect.has_table(engine, "domain") or engine.dialect.has_table(engine, "telegram_user"):
         raise TableAlreadyExists
 
     meta = MetaData()
