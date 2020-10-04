@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=jyvk3Diz
+      - POSTGRES_USER=rkn_blocks
+      - POSTGRES_DB=rkn_blocks
+    ports:
+    - 5433:5432

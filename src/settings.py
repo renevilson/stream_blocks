@@ -12,6 +12,12 @@ Env.read_env(ENV_PATH)
 IS_BLOCK_IN_RUSSIA_DOMAIN = env.str("IS_BLOCK_IN_RUSSIA_DOMAIN", "https://isitblockedinrussia.com/")
 API_TOKEN = env.str("API_TOKEN")
 
+# PSQL
+POSTGRES_HOST = env.str("POSTGRES_HOST", "0.0.0.0")
+POSTGRES_PORT = env.int("POSTGRES_PORT", 5433)
+POSTGRES_PASSWORD = env.str("POSTGRES_PASSWORD", "")
+POSTGRES_USER = env.str("POSTGRES_USER", "")
+POSTGRES_DB = env.str("POSTGRES_DB", "")
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
