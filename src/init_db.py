@@ -40,4 +40,4 @@ def create_tables(engine):
 
 if __name__ == "__main__":
     engine = create_engine(DSN)
-create_tables(engine)
+    create_tables(engine)
