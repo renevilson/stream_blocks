@@ -6,7 +6,7 @@ Babel==2.8.0
 certifi==2020.6.20
 chardet==3.0.4
 environs==8.0.0
-idna==2.10
+idna
 marshmallow==3.8.0
 multidict==4.7.6
 psycopg2-binary==2.8.6
