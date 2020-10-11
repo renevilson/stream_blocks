@@ -15,7 +15,8 @@ def create_tables(engine):
     """
 
     if engine.dialect.has_table(engine, "domain") or engine.dialect.has_table(engine, "telegram_user"):
-        raise TableAlreadyExists
+        return
+        # raise TableAlreadyExists
 
     meta = MetaData()
 

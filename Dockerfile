@@ -12,5 +12,6 @@ COPY . .
 
 RUN pip install -r requirements.txt
 ENV PYTHONPATH "${PYTHONPATH}:/app"
+CMD ["python", "src/init_db.py" ]
 CMD ["python", "src/server.py" ]
 
