@@ -1,6 +1,7 @@
 import os
 import asyncio
 
+from sqlalchemy import create_engine, MetaData
 from environs import Env
 from aiogram import Bot, Dispatcher
 
@@ -18,6 +19,11 @@ POSTGRES_PORT = env.int("POSTGRES_PORT", 5433)
 POSTGRES_PASSWORD = env.str("POSTGRES_PASSWORD", "")
 POSTGRES_USER = env.str("POSTGRES_USER", "")
 POSTGRES_DB = env.str("POSTGRES_DB", "")
+
+# SQLALCHEMY
+DSN = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+meta = MetaData()
+engine = create_engine(DSN)
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
