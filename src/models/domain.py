@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import Table, Column, Integer, String, Date
+from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey
 
 from src.settings import meta
 
@@ -10,4 +10,6 @@ Domain = Table(
     Column("url", String),
     Column("add_date", Date, default=datetime.datetime.now),
     Column("block_date", Date, nullable=True),
+    Column("user_id", Integer, ForeignKey("telegram_user.id")),
+
 )
