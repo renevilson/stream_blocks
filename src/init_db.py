@@ -1,21 +1,13 @@
-from sqlalchemy import create_engine, MetaData
-
-from src.models import Domain, TelegramUser
-from src.settings import DSN
+from src.models import *
+from src.settings import Base, engine
 
 
-def create_tables(engine):
+def create_tables():
     """
     Создаем таблицы для сохранения отслеживаемых ресурсов
     """
-
-    if engine.dialect.has_table(engine, "domain") or engine.dialect.has_table(engine, "telegram_user"):
-        return
-
-    meta = MetaData()
-    meta.create_all(bind=engine, tables=[Domain, TelegramUser])
+    Base.metadata.create_all(engine)
 
 
 if __name__ == "__main__":
-    engine = create_engine(DSN)
-    create_tables(engine)
+    create_tables()

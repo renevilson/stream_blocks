@@ -1,15 +1,21 @@
 import datetime
 
-from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, ForeignKey
 
-from src.settings import meta
+from src.settings import Base
 
-Domain = Table(
-    "domain", meta,
-    Column("id", Integer, primary_key=True),
-    Column("url", String),
-    Column("add_date", Date, default=datetime.datetime.now),
-    Column("block_date", Date, nullable=True),
-    Column("user_id", Integer, ForeignKey("telegram_user.id")),
 
-)
+class Domain(Base):
+    __tablename__ = "domain"
+    id = Column(Integer, primary_key=True)
+    url = Column(String)
+    add_date = Column(Date, default=datetime.datetime.now)
+    block_date = Column(Date, nullable=True)
+    user_id = Column(Integer, ForeignKey("telegram_user.id"))
+
+    def __init__(self, url: str, user_id: int):
+        self.url = url
+        self.user_id = user_id
+
+    def __str__(self):
+        return self.url
