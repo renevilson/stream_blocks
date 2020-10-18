@@ -1,5 +1,4 @@
 import os
-import asyncio
 
 from sqlalchemy import create_engine, MetaData
 from environs import Env
@@ -32,4 +31,6 @@ Session = sessionmaker(bind=engine)
 # BOT
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
-# loop = asyncio.get_event_loop()
+
+# TIMER
+CHECK_PERIOD = env.int("CHECK_PERIOD", 1 * 60)  # Указываем время в секундах

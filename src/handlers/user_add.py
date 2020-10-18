@@ -15,14 +15,11 @@ async def add_domain(message: types.Message):
     chat_id = message["chat"]["id"]
     url = await get_domain(message)
     session = Session()
-    user = session.query(TelegramUser).filter_by(tg_id=str(user_id)).first()
+    user = session.query(TelegramUser).filter_by(tg_id=user_id).first()
     if not user:
         return
     response = "Укажите домен"
     if url:
-        get_or_create(Domain, {
-            "url": url,
-            "user_id": user.id
-        })
+        get_or_create(Domain, url=url, user_id=user.id)
         response = f"Домен {url} добавлен."
     await bot.send_message(chat_id=chat_id, text=response)

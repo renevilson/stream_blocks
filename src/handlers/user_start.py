@@ -13,10 +13,7 @@ async def start(message: types.Message):
     user_id = message.from_user.id
     username = message.from_user.username
     chat_id = message["chat"]["id"]
-    get_or_create(TelegramUser, {
-        "username": username,
-        "tg_id": user_id
-    })
+    get_or_create(TelegramUser, username=username, tg_id=user_id, chat_id=chat_id)
 
     response = f"""
 Для отслеживания домена напишите /add domain.
