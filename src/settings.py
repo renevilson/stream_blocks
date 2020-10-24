@@ -33,4 +33,4 @@ bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
 # TIMER
-CHECK_PERIOD = env.int("CHECK_PERIOD", 1 * 60)  # Указываем время в секундах
+CHECK_PERIOD = env.int("CHECK_PERIOD", 1 * 20)  # Указываем время в секундах
