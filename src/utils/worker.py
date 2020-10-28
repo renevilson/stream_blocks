@@ -51,6 +51,23 @@ class DatabaseWorker:
             text = f"Вы уже следите за доменом {url}"
         return {"chat_id": self.chat_id, "text": text}
 
+    def remove_domain(self) -> dict:
+        """
+        Метод для удаления отслеживаемого домена
+        """
+
+        url = self._get_domain(self.text)
+        if not url:
+            return {"chat_id": self.chat_id, "text": "Некорректный домен"}
+
+        obj = self.session.query(Domain).filter_by(url=url).first()
+        if not obj:
+            return {"chat_id": self.chat_id, "text": "Такой домен не отслеживается"}
+        self.session.delete(obj)
+        self.session.commit()
+        response = f"Домен {url} удален"
+        return {"chat_id": self.chat_id, "text": response}
+
     def start(self) -> dict:
         """
         Начало работы с ботом. Добавление пользователя в базу данных.
@@ -67,7 +84,7 @@ class DatabaseWorker:
         Выделение домена из сообщения
         """
         try:
-            return text.replace("/add", "").replace(" ", "")
+            return text.split(" ")[-1]
         except Exception as err:
             return None
 
