@@ -3,7 +3,7 @@ FROM python:3.7-slim
 
 ENV PYTHONPATH = $PWD
 
-RUN apt update -y && apt upgrade -y && pip install --upgrade pip
+RUN apt update -y && apt upgrade -y && pip install --upgrade pip && apt-get install -y gcc
 
 RUN mkdir /app
 WORKDIR /app

@@ -17,7 +17,6 @@ async def checker():
         s = requests.Session()
         for domain in domains:
             if not domain.Domain.block_date:
-                print(f"start checking domain: {domain.Domain.url}")
                 response = s.post(
                     url="https://isitblockedinrussia.com/",
                     json={"host": domain.Domain.url}
