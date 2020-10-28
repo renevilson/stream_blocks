@@ -12,37 +12,38 @@ async def checker():
     """
     while True:
         session = Session()
-        domains = session.query(Domain).with_for_update()
+        domains = session.query(Domain, TelegramUser).join(TelegramUser,
+                                                           Domain.user_id == TelegramUser.id).with_for_update()
         s = requests.Session()
         for domain in domains:
-
-                response = s.post(url="https://isitblockedinrussia.com/", json={"host": domain.url})
+            if not domain.Domain.block_date:
+                print(f"start checking domain: {domain.Domain.url}")
+                response = s.post(
+                    url="https://isitblockedinrussia.com/",
+                    json={"host": domain.Domain.url}
+                )
                 response_dict = response.json()
-                ips = response_dict.get("ips")
-                urls = response_dict.get("domain")
+                ips_blocked = response_dict.get("ips")[-1].get("blocked") if response_dict.get("ips") else None
+                urls_blocked = response_dict.get("domain", {}).get("blocked")
                 text = ""
 
-                if ips and len(ips):
-                    blocked = ips[0].get('blocked')
-                    if blocked:
-                        block_date = blocked[0].get('decision_date')
-                    # ip_address = ips[0].get('value')
-                    # text += f"IP {ip_address} заблокирован от {block_date}"
-                        if not domain.block_date:
-                            domain.block_date = block_date
-                # if domain:
-                #     block_date = domain[0].get('blocked')[-1].get('decision_date')
-                #     text += f"domain {domain.url} заблокирован от {block_date}"
-                #     if not domain.block_date:
-                #         domain.block_date = block_date
-                print(domain.user)
+                #  Проверка на блокировку по домену
+                if urls_blocked:
+                    decision_date = urls_blocked[-1].get("decision_date")
+                    text += f"Домен {domain.Domain.url} заблокирован от {decision_date} \n"
+                    domain.Domain.block_date = decision_date
+
+                # Проверка на блокировку по ip адресу
+                if ips_blocked:
+                    decision_date = ips_blocked[-1].get("decision_date")
+                    text += f"ip адрес домена {domain.Domain.url} заблокирован от {decision_date} \n"
+
+                    if not domain.Domain.block_date:
+                        domain.Domain.block_date = decision_date
+
+                # Отсылаем пользователю уведомление о блокировке
                 if text:
-                    print(domain.user)
-                    # await bot.send_message(chat_id=domain.)
+                    await bot.send_message(chat_id=domain.TelegramUser.chat_id, text=text)
 
-
-        # except Exception as err:
-            #     print(err)
-            #     break
-        session.commit()
-        await sleep(CHECK_PERIOD)  # Проверка будет производиться раз в CHECK_PERIOD
+                session.commit()
+            await sleep(CHECK_PERIOD)  # Проверка будет производиться раз в CHECK_PERIOD
